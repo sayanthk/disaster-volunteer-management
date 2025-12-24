@@ -33,6 +33,32 @@ def register():
 
     return render_template("register.html")
 
+@app.route("/assign", methods=["GET", "POST"])
+def assign():
+    if request.method == "POST":
+        volunteer_id = request.form["volunteer_id"]
+
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT trained, level FROM volunteers WHERE id = ?",
+            (volunteer_id,)
+        )
+        result = cursor.fetchone()
+        conn.close()
+
+        if result is None:
+            return "Volunteer not found"
+
+        trained, level = result
+
+        if trained == 0:
+            return "Assignment blocked: Volunteer is NOT trained"
+
+        return f"Volunteer assigned successfully (Level {level})"
+
+    return render_template("assign.html")
 
 
 if __name__ == "__main__":
