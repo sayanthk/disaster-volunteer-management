@@ -33,17 +33,6 @@ def register():
 
     return render_template("register.html")
 
-@app.route("/volunteers")
-def volunteers():
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM volunteers")
-    data = cursor.fetchall()
-
-    conn.close()
-    return str(data)
-
 
 
 if __name__ == "__main__":
