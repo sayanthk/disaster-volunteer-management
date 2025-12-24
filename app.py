@@ -7,6 +7,7 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -32,6 +33,42 @@ def register():
         return "Registration Successful"
 
     return render_template("register.html")
+
+
+@app.route("/volunteers")
+def volunteers():
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM volunteers")
+    data = cursor.fetchall()
+
+    conn.close()
+    return str(data)
+
+
+@app.route("/training", methods=["GET", "POST"])
+def training():
+    if request.method == "POST":
+        volunteer_id = request.form["volunteer_id"]
+
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE volunteers
+            SET trained = 1,
+                level = level + 1
+            WHERE id = ?
+        """, (volunteer_id,))
+
+        conn.commit()
+        conn.close()
+
+        return "Training completed successfully"
+
+    return render_template("training.html")
+
 
 @app.route("/assign", methods=["GET", "POST"])
 def assign():
