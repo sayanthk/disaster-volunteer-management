@@ -150,6 +150,43 @@ def admin():
 
     return render_template("admin.html", volunteers=volunteers)
 
+@app.route("/locationassign", methods=["GET", "POST"])
+def location_assign():
+    volunteers = []
+    message = None
+
+    if request.method == "POST":
+        location = request.form["location"]
+
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT id, name, trained, level
+            FROM volunteers
+            WHERE location = ?
+        """, (location,))
+
+        rows = cursor.fetchall()
+        conn.close()
+
+        for r in rows:
+            if r[2] == 1:  # trained
+                volunteers.append({
+                    "id": r[0],
+                    "name": r[1],
+                    "level": r[3]
+                })
+
+        if not volunteers:
+            message = "No trained volunteers available for this location"
+
+    return render_template(
+        "locationassign.html",
+        volunteers=volunteers,
+        message=message
+    )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
