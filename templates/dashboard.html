@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Volunteer Dashboard</title>
+</head>
+<body>
+    <h2>Volunteer Dashboard</h2>
+
+    <form method="POST">
+        <label>Enter your Volunteer ID:</label><br><br>
+        <input type="number" name="volunteer_id" required><br><br>
+        <button type="submit">View Dashboard</button>
+    </form>
+
+    {% if volunteer %}
+        <hr>
+        <h3>Volunteer Details</h3>
+        <p><strong>Name:</strong> {{ volunteer.name }}</p>
+        <p><strong>Experience:</strong> {{ volunteer.experience }}</p>
+        <p><strong>Level:</strong> {{ volunteer.level }}</p>
+
+        <p><strong>Training Status:</strong>
+            {% if volunteer.trained %}
+                ✅ Trained
+            {% else %}
+                ❌ Not Trained
+            {% endif %}
+        </p>
+
+        <p><strong>Assignment Eligibility:</strong>
+            {% if volunteer.trained %}
+                ✅ Eligible for Assignment
+            {% else %}
+                ❌ Not Eligible
+            {% endif %}
+        </p>
+    {% endif %}
+</body>
+</html>

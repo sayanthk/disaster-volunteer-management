@@ -97,6 +97,35 @@ def assign():
 
     return render_template("assign.html")
 
+@app.route("/dashboard", methods=["GET", "POST"])
+def dashboard():
+    volunteer = None
+
+    if request.method == "POST":
+        volunteer_id = request.form["volunteer_id"]
+
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT name, experience, trained, level
+            FROM volunteers
+            WHERE id = ?
+        """, (volunteer_id,))
+
+        row = cursor.fetchone()
+        conn.close()
+
+        if row:
+            volunteer = {
+                "name": row[0],
+                "experience": row[1],
+                "trained": row[2],
+                "level": row[3]
+            }
+
+    return render_template("dashboard.html", volunteer=volunteer)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
