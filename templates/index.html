@@ -1,10 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Disaster Volunteer System</title>
+    <title>Disaster Volunteer Management System</title>
 </head>
 <body>
     <h1>Disaster Volunteer Management System</h1>
-    <p>Project initialized successfully.</p>
+
+    <p>
+        This platform ensures that only trained and verified volunteers
+        are deployed during disaster situations, reducing risks and improving
+        coordinated response.
+    </p>
+
+    <hr>
+
+    <h2>📊 Public Statistics</h2>
+    <ul>
+        <li>Total Volunteers: {{ stats.total }}</li>
+        <li>Trained Volunteers: {{ stats.trained }}</li>
+        <li>Untrained Volunteers: {{ stats.untrained }}</li>
+    </ul>
+
+    <hr>
+
+    <h2>🔐 Access Portals</h2>
+
+    <p>
+        <a href="/dashboard">
+            <button>Volunteer Portal</button>
+        </a>
+    </p>
+
+    <p>
+        <a href="/admin">
+            <button>Admin Portal</button>
+        </a>
+    </p>
 </body>
 </html>

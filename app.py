@@ -5,7 +5,28 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM volunteers")
+    total = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM volunteers WHERE trained = 1")
+    trained = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM volunteers WHERE trained = 0")
+    untrained = cursor.fetchone()[0]
+
+    conn.close()
+
+    stats = {
+        "total": total,
+        "trained": trained,
+        "untrained": untrained
+    }
+
+    return render_template("index.html", stats=stats)
+
 
 
 @app.route("/register", methods=["GET", "POST"])
