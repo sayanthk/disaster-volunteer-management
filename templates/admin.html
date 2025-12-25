@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h2>Admin Dashboard</h2>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Experience</th>
+            <th>Level</th>
+            <th>Training Status</th>
+        </tr>
+
+        {% for v in volunteers %}
+        <tr>
+            <td>{{ v.id }}</td>
+            <td>{{ v.name }}</td>
+            <td>{{ v.experience }}</td>
+            <td>{{ v.level }}</td>
+            <td>
+                {% if v.trained %}
+                    ✅ Trained
+                {% else %}
+                    ❌ Not Trained
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

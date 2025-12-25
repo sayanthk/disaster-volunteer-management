@@ -126,6 +126,30 @@ def dashboard():
 
     return render_template("dashboard.html", volunteer=volunteer)
 
+@app.route("/admin")
+def admin():
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id, name, experience, trained, level
+        FROM volunteers
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+
+    volunteers = []
+    for r in rows:
+        volunteers.append({
+            "id": r[0],
+            "name": r[1],
+            "experience": r[2],
+            "trained": r[3],
+            "level": r[4]
+        })
+
+    return render_template("admin.html", volunteers=volunteers)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
